@@ -43,14 +43,14 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
-                token._id = user.id?.toString(); 
+                token._id = user._id?.toString(); // Convert ObjectId to string
                 token.username = user.username;
             }
             return token;
         },
         async session({ session, token }) {
             if (token) {
-                session.user.id = token._id;
+                session.user._id = token._id;
                 session.user.username = token.username;
             }
             return session;
@@ -60,7 +60,4 @@ export const authOptions: NextAuthOptions = {
         strategy: 'jwt',
     },
     secret: process.env.NEXTAUTH_SECRET,
-    pages: {
-        signIn: '/login',
-    },
 };

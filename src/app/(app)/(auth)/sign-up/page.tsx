@@ -53,7 +53,7 @@ const Page = () => {
         checkUsernameUnique();
     }, [username]);
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: z.infer<typeof userSignUpSchema>) => {
         try {
             const response = await axios.post<ApiResponse>('/api/user', data)
             if(response.data.success) {

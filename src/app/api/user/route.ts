@@ -36,3 +36,34 @@ export async function POST(request: NextRequest) {
         }, {status: 500})
     }
 }
+
+export async function GET(request: NextRequest) {
+    await dbConnect()
+
+    try {
+        const {searchParams} = new URL(request.url)
+        const queryParam = {
+            id: searchParams.get('id')
+        }
+        const userId = queryParam.id
+        if(userId) {
+            const user = await UserModel.findById(userId)
+            return NextResponse.json({
+                success: true,
+                message: "Users fetched successfully.",
+                data: user
+            }, {status: 200})
+        }
+        const users = await UserModel.find()
+        return NextResponse.json({
+            success: true,
+            message: "Users fetched successfully.",
+            data: users
+        }, {status: 201})
+    } catch(error) {
+        return NextResponse.json({
+            success: false,
+            message: "Something went wrong, try again later"
+        }, {status: 500})
+    }
+}
