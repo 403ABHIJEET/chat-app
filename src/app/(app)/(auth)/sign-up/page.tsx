@@ -8,6 +8,7 @@ import axios, { AxiosError } from 'axios';
 import { useDebounceCallback } from 'usehooks-ts';
 import { ApiResponse } from '@/types/apiResponse';
 import { Loader2 } from 'lucide-react'
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
 
@@ -15,6 +16,7 @@ const Page = () => {
     const [usernameMessage, setUsernameMessage] = useState<string>('')
     const [isCheckingUsername, setIsCheckingUsername] = useState<boolean>(false)
     const debounced = useDebounceCallback(setUsername, 500)
+    const router = useRouter()
 
     const { register, handleSubmit, formState: { errors } } = useForm<z.infer<typeof userSignUpSchema>>({
         resolver: zodResolver(userSignUpSchema),
@@ -53,7 +55,10 @@ const Page = () => {
 
     const onSubmit = async (data: any) => {
         try {
-            await axios.post<ApiResponse>('/api/sign-up', data)
+            const response = await axios.post<ApiResponse>('/api/user', data)
+            if(response.data.success) {
+                router.replace("/login")
+            }
         } catch (error) {
             console.error('Error creating user:', error);
         }
