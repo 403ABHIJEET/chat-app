@@ -1,4 +1,3 @@
-'use client'
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,8 +8,12 @@ import { useDebounceCallback } from 'usehooks-ts';
 import { ApiResponse } from '@/types/apiResponse';
 import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation';
+import { Card, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button"
 
-const Page = () => {
+export default function SignUp() {
 
     const [username, setUsername] = useState<string>('')
     const [usernameMessage, setUsernameMessage] = useState<string>('')
@@ -31,7 +34,7 @@ const Page = () => {
 
     useEffect(() => {
         const checkUsernameUnique = async () => {
-            if(!username) {
+            if (!username) {
                 setUsernameMessage('')
                 return
             }
@@ -56,7 +59,7 @@ const Page = () => {
     const onSubmit = async (data: z.infer<typeof userSignUpSchema>) => {
         try {
             const response = await axios.post<ApiResponse>('/api/user', data)
-            if(response.data.success) {
+            if (response.data.success) {
                 router.replace("/login")
             }
         } catch (error) {
@@ -65,80 +68,74 @@ const Page = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-96">
+        <Card className="w-96 shadow-lg">
+            <CardContent className="p-8">
                 <h2 className="text-2xl font-bold text-center mb-6">Sign Up</h2>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Name</label>
-                        <input
-                            type="text"
+                    <div className="mb-4 flex flex-col gap-1">
+                        <Label htmlFor="name">Name</Label>
+                        <Input
+                            id="name"
                             {...register('name')}
-                            className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Enter your name"
                         />
                         {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
                     </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Email</label>
-                        <input
-                            type="text"
+
+                    <div className="mb-4 flex flex-col gap-1">
+                        <Label htmlFor="email">Email</Label>
+                        <Input
+                            id="email"
                             {...register('email')}
-                            className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Enter your name"
+                            placeholder="Enter your email"
                         />
                         {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
                     </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Username</label>
-                        <input
-                            type="text"
+
+                    <div className="mb-4 flex flex-col gap-1">
+                        <Label htmlFor="username">Username</Label>
+                        <Input
+                            id="username"
                             {...register('username')}
-                            className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Enter your username"
-                            onChange={(e: any) => {
-                                debounced(e.target.value)
-                            }}
+                            onChange={(e) => debounced(e.target.value)}
                         />
                         {isCheckingUsername && <Loader2 className="animate-spin" />}
                         {!isCheckingUsername && (
-                            <p className={`text-sm ${usernameMessage == "username is available" ? 'text-green-500' : 'text-red-500'}`}>
+                            <p className={`text-sm ${usernameMessage === "username is available" ? "text-green-500" : "text-red-500"}`}>
                                 {usernameMessage}
                             </p>
                         )}
                         {errors.username && <p className="text-red-500 text-sm">{errors.username.message}</p>}
                     </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Password</label>
-                        <input
+
+                    <div className="mb-4 flex flex-col gap-1">
+                        <Label htmlFor="password">Password</Label>
+                        <Input
                             type="password"
+                            id="password"
                             {...register('password')}
-                            className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Enter your password"
                         />
                         {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
                     </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Confirm Password</label>
-                        <input
+
+                    <div className="mb-4 flex flex-col gap-1">
+                        <Label htmlFor="confirmPassword">Confirm Password</Label>
+                        <Input
                             type="password"
+                            id="confirmPassword"
                             {...register('confirmPassword')}
-                            className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Confirm your password"
                         />
                         {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>}
                     </div>
-                    <button
-                        type="submit"
-                        className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-200"
-                    >
+
+                    <Button type="submit" className="w-full">
                         Sign Up
-                    </button>
+                    </Button>
                 </form>
-            </div>
-        </div>
-    );
+            </CardContent>
+        </Card>
+    )
 };
-
-export default Page;
-

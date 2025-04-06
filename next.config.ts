@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'static.whatsapp.net',
       },
+      {
+        protocol: 'https',
+        hostname: 'assets.aceternity.com',
+      },
     ],
   },
 };
