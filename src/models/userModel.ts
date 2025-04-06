@@ -1,12 +1,12 @@
 import mongoose, {Schema, Document} from "mongoose";
-import { Friend, FriendShchema } from "./firendModel";
 
 export interface User extends Document {
     name: string,
     username: string,
     email: string,
     password: string
-    friends: Friend[]
+    profile: string
+    bio: string
     createdAt: Date
 }
 
@@ -32,7 +32,14 @@ export const UserSchema: Schema<User> = new Schema({
         type: String,
         required: [true, "Password is required"]
     },
-    friends: [FriendShchema],
+    profile: {
+        type: String,
+        required: true
+    },
+    bio: {
+        type: String,
+        required: true
+    },
     createdAt: {
         type: Date,
         required: true,
