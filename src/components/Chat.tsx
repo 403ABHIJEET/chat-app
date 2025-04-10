@@ -15,6 +15,7 @@ import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-van
 import { useDebounceCallback } from 'usehooks-ts';
 import { ExpandableCardDemo } from "./ExpandCard"
 import { Search, Send } from "lucide-react";
+import ThemeToggle from "./ThemeToggle"
 
 export default function Chat() {
 
@@ -84,76 +85,80 @@ export default function Chat() {
     };
 
     return (
-        <div className="h-full">
-            <ResizablePanelGroup
-                direction="horizontal"
-                className="w-full rounded-lg border"
-            >
-                <ResizablePanel defaultSize={50}>
-                    <div className="p-4 mt-5">
-                        <PlaceholdersAndVanishInput
-                            placeholders={placeholders}
-                            onChange={debounced}
-                            onSubmit={onSubmit}
-                        />
-                    </div>
-                    <div className="">
-                        <div >
-                            {
-                                fetching ? (
-                                    <Skeleton />
-                                ) : (
-                                    <ExpandableCardDemo users={users} />
-                                )
-                            }
-                        </div>
-                    </div>
-                </ResizablePanel>
-                <ResizableHandle />
-                <ResizablePanel defaultSize={50}>
-                    <div className="w-full h-full shadow-md p-4 bg-white dark:bg-gray-950  flex flex-col">
-                        <div className="mb-2 flex items-center gap-2 px-3 py-2 border rounded-full dark:border-gray-600">
-                            <Search className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                            <input
-                                type="text"
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                                placeholder="Search messages"
-                                className="flex-1 outline-none text-sm placeholder-gray-400 dark:placeholder-gray-500 text-gray-800 dark:text-white"
+
+        <>
+            <div className="h-full">
+                <ThemeToggle />
+                <ResizablePanelGroup
+                    direction="horizontal"
+                    className="w-full rounded-lg border"
+                >
+                    <ResizablePanel defaultSize={50}>
+                        <div className="p-4 mt-5">
+                            <PlaceholdersAndVanishInput
+                                placeholders={placeholders}
+                                onChange={debounced}
+                                onSubmit={onSubmit}
                             />
                         </div>
-                        <div className="flex-1 overflow-y-auto space-y-2">
-                            {messages
-                                .filter((msg) => msg.content.toLowerCase().includes(search.toLowerCase()))
-                                .map((msg) => (
-                                    <div
-                                        key={msg.id}
-                                        className={`max-w-[70%] px-4 py-2 rounded-lg text-sm leading-tight whitespace-pre-line 
+                        <div className="">
+                            <div >
+                                {
+                                    fetching ? (
+                                        <Skeleton />
+                                    ) : (
+                                        <ExpandableCardDemo users={users} />
+                                    )
+                                }
+                            </div>
+                        </div>
+                    </ResizablePanel>
+                    <ResizableHandle />
+                    <ResizablePanel defaultSize={50}>
+                        <div className="w-full h-full shadow-md p-4 bg-white dark:bg-gray-950  flex flex-col">
+                            <div className="mb-2 flex items-center gap-2 px-3 py-2 border rounded-full dark:border-gray-600">
+                                <Search className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                                <input
+                                    type="text"
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    placeholder="Search messages"
+                                    className="flex-1 outline-none text-sm placeholder-gray-400 dark:placeholder-gray-500 text-gray-800 dark:text-white"
+                                />
+                            </div>
+                            <div className="flex-1 overflow-y-auto space-y-2">
+                                {messages
+                                    .filter((msg) => msg.content.toLowerCase().includes(search.toLowerCase()))
+                                    .map((msg) => (
+                                        <div
+                                            key={msg.id}
+                                            className={`max-w-[70%] px-4 py-2 rounded-lg text-sm leading-tight whitespace-pre-line 
                         ${msg.sender === session?.user.username
-                                                ? "ml-auto bg-blue-500 text-white dark:bg-blue-700"
-                                                : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200"
-                                            }`}
-                                    >
-                                        {msg.content}
-                                    </div>
-                                ))}
-                            <div ref={bottomRef} />
+                                                    ? "ml-auto bg-blue-500 text-white dark:bg-blue-700"
+                                                    : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200"
+                                                }`}
+                                        >
+                                            {msg.content}
+                                        </div>
+                                    ))}
+                                <div ref={bottomRef} />
+                            </div>
+                            <div className="flex items-center border rounded-full px-3 py-2 mt-2 dark:border-gray-600">
+                                <input
+                                    type="text"
+                                    value={input}
+                                    onChange={(e) => setInput(e.target.value)}
+                                    placeholder="Type a message"
+                                    className="flex-1 outline-none text-sm placeholder-gray-400 dark:placeholder-gray-500 text-gray-800 dark:text-white"
+                                />
+                                <button onClick={sendMessage} className="text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400">
+                                    <Send className="w-4 h-4" />
+                                </button>
+                            </div>
                         </div>
-                        <div className="flex items-center border rounded-full px-3 py-2 mt-2 dark:border-gray-600">
-                            <input
-                                type="text"
-                                value={input}
-                                onChange={(e) => setInput(e.target.value)}
-                                placeholder="Type a message"
-                                className="flex-1 outline-none text-sm placeholder-gray-400 dark:placeholder-gray-500 text-gray-800 dark:text-white"
-                            />
-                            <button onClick={sendMessage} className="text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400">
-                                <Send className="w-4 h-4" />
-                            </button>
-                        </div>
-                    </div>
-                </ResizablePanel>
-            </ResizablePanelGroup>
-        </div>
+                    </ResizablePanel>
+                </ResizablePanelGroup>
+            </div>
+        </>
     )
 }

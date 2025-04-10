@@ -13,36 +13,8 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import Chat from "./Chat";
 import { signOut } from "next-auth/react";
-import { Icon } from "lucide-react";
-import { Switch } from "./ui/switch";
-import { Label } from "./ui/label";
 
 export function SidebarDemo() {
-
-    const [isDark, setIsDark] = useState(false);
-
-    useEffect(() => {
-        toggleTheme()
-        const savedTheme = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-            document.documentElement.classList.add('dark');
-            setIsDark(true);
-        }
-    }, [isDark]);
-
-    const toggleTheme = () => {
-        const html = document.documentElement;
-        if (html.classList.contains('dark')) {
-            html.classList.remove('dark');
-            localStorage.setItem('theme', 'light');
-            setIsDark(false);
-        } else {
-            html.classList.add('dark');
-            localStorage.setItem('theme', 'dark');
-            setIsDark(true);
-        }
-    };
 
     const links = [
         {
@@ -99,10 +71,6 @@ export function SidebarDemo() {
                                     <SidebarLink link={link} />
                                 </button>
                             ))}
-                            <div className="flex items-center space-x-2">
-                                <Switch id="airplane-mode" onCheckedChange={(e) => setIsDark(e)} />
-                                <Label className="text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0" >Dark Mode</Label>
-                            </div>
                         </div>
                     </div>
                     <div>
