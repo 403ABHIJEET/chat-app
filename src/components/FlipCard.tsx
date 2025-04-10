@@ -1,38 +1,31 @@
 'use client';
-
 import React, { useState } from 'react';
 import './FlipCard.css';
+import SignUp from './SignUp';
+import Login from './Login';
 
 const FlipCard: React.FC = () => {
   const [flipped, setFlipped] = useState(false);
 
   return (
-    <div className="flip-card w-80 h-52 perspective">
+    <div className="flip-card perspective mx-auto">
       <div
-        className={`flip-inner relative w-full h-full transition-transform duration-500 transform-style preserve-3d ${
-          flipped ? 'rotate-y-180' : ''
-        }`}
+        className={`flip-inner relative w-full h-full transition-transform duration-500 ${flipped ? 'flipped' : ''}`}
       >
         {/* Front */}
-        <div className="flip-front absolute w-full h-full bg-white rounded-xl shadow-xl backface-hidden flex flex-col items-center justify-center p-4 space-y-4">
-          <h2 className="text-xl font-bold">Front Side</h2>
-          <button
-            onClick={() => setFlipped(true)}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
-          >
-            Show Back
-          </button>
+        <div
+          className={`flip-front absolute w-full h-full bg-white dark:bg-zinc-900 text-black dark:text-white rounded-xl shadow-xl flex flex-col items-center justify-center p-4 space-y-4 transition-opacity duration-500 ${flipped ? 'opacity-0 pointer-events-none z-0' : 'opacity-100 z-10'
+            }`}
+        >
+          <Login flips={(val) => setFlipped(val)} />
         </div>
 
         {/* Back */}
-        <div className="flip-back absolute w-full h-full bg-blue-600 text-white rounded-xl shadow-xl rotate-y-180 backface-hidden flex flex-col items-center justify-center p-4 space-y-4">
-          <h2 className="text-xl font-bold">Back Side</h2>
-          <button
-            onClick={() => setFlipped(false)}
-            className="px-4 py-2 bg-white text-blue-600 rounded-lg shadow hover:bg-gray-100 transition"
-          >
-            Show Front
-          </button>
+        <div
+          className={`flip-back absolute w-full h-full bg-white dark:bg-zinc-900 text-black dark:text-white rounded-xl shadow-xl flex flex-col items-center justify-center p-4 space-y-4 transition-opacity duration-500 ${flipped ? 'opacity-100 z-10' : 'opacity-0 pointer-events-none z-0'
+            }`}
+        >
+          <SignUp flips={(val) => setFlipped(val)} />
         </div>
       </div>
     </div>

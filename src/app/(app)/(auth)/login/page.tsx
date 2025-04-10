@@ -1,21 +1,11 @@
 'use client'
-import Login from "@/components/Login";
-import SignUp from "@/components/SignUp";
-import { useState } from "react";
+import FlipCard from "@/components/FlipCard";
 
 const Page = () => {
 
-    const [isLogin, seIsLogin] = useState(true)
-
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
-            {
-                isLogin ? (
-                    <Login />
-                ) : (
-                    <SignUp />
-                )
-            }
+            <FlipCard />
         </div>
     )
 };

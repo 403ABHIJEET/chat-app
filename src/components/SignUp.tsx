@@ -6,20 +6,26 @@ import { userSignUpSchema } from '@/schemas/userSchema';
 import axios, { AxiosError } from 'axios';
 import { useDebounceCallback } from 'usehooks-ts';
 import { ApiResponse } from '@/types/apiResponse';
-import { Loader2 } from 'lucide-react'
+import { Eye, EyeOff, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation';
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 
-export default function SignUp() {
+interface props {
+    flips: (val: boolean) => void
+}
+
+export default function SignUp({ flips }: props) {
 
     const [username, setUsername] = useState<string>('')
     const [usernameMessage, setUsernameMessage] = useState<string>('')
     const [isCheckingUsername, setIsCheckingUsername] = useState<boolean>(false)
     const debounced = useDebounceCallback(setUsername, 500)
     const router = useRouter()
+    const [showPassword, setShowPassword] = useState(false);
+    const [isSignUp, setIsSignUp] = useState<boolean>(false)
 
     const { register, handleSubmit, formState: { errors } } = useForm<z.infer<typeof userSignUpSchema>>({
         resolver: zodResolver(userSignUpSchema),
@@ -38,7 +44,7 @@ export default function SignUp() {
                 setUsernameMessage('')
                 return
             }
-            if (username) {
+            if (username.length >= 3) {
                 setIsCheckingUsername(true);
                 setUsernameMessage('');
                 try {
@@ -57,6 +63,7 @@ export default function SignUp() {
     }, [username]);
 
     const onSubmit = async (data: z.infer<typeof userSignUpSchema>) => {
+        setIsSignUp(true)
         try {
             const response = await axios.post<ApiResponse>('/api/user', data)
             if (response.data.success) {
@@ -64,6 +71,8 @@ export default function SignUp() {
             }
         } catch (error) {
             console.error('Error creating user:', error);
+        } finally {
+            setIsSignUp(false)
         }
     };
 
@@ -111,12 +120,22 @@ export default function SignUp() {
 
                     <div className="mb-4 flex flex-col gap-1">
                         <Label htmlFor="password">Password</Label>
-                        <Input
-                            type="password"
-                            id="password"
-                            {...register('password')}
-                            placeholder="Enter your password"
-                        />
+                        <div className="relative">
+                            <Input
+                                type={showPassword ? 'text' : 'password'}
+                                id="password"
+                                {...register('password')}
+                                placeholder="Enter your password"
+                                className="pr-10"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute inset-y-0 right-2 flex items-center text-gray-500"
+                            >
+                                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                            </button>
+                        </div>
                         {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
                     </div>
 
@@ -131,10 +150,23 @@ export default function SignUp() {
                         {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>}
                     </div>
 
-                    <Button type="submit" className="w-full">
-                        Sign Up
+                    <Button type="submit" className="w-full" disabled={isSignUp}>
+                        {
+                            isSignUp ? (
+                                <Loader2 className="w-10 h-10 text-gray-600 animate-spin" />
+                            ) : (
+                                'Sign Up'
+                            )
+                        }
                     </Button>
                 </form>
+                <div className='text-center pt-1'>
+                    Already have an account?
+                    <button className="text-blue-500 hover:text-blue-800"
+                        onClick={() => flips(false)}>
+                        Login
+                    </button>
+                </div>
             </CardContent>
         </Card>
     )
