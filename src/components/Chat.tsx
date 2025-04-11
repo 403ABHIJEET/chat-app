@@ -88,7 +88,9 @@ export default function Chat() {
 
         <>
             <div className="h-full">
-                <ThemeToggle />
+                <div className="pb-5">
+                    <ThemeToggle />
+                </div>
                 <ResizablePanelGroup
                     direction="horizontal"
                     className="w-full rounded-lg border"

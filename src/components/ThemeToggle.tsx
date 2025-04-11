@@ -31,7 +31,7 @@ export default function ThemeToggle() {
     };
 
     return (
-        <div className='flex justify-end pb-5'>
+        <div className='flex justify-end items-center'>
             <div className='flex gap-2'>
                 <Switch onClick={toggleTheme} />
                 <Label>
