@@ -30,6 +30,7 @@ export async function POST(request: NextRequest) {
             message: "User registered successfully."
         }, {status: 200})
     } catch (error) {
+        console.log(error)
         return NextResponse.json({
             success: false,
             message: "Something went wrong, try again later."

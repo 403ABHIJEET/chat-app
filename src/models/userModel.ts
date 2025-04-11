@@ -34,11 +34,9 @@ export const UserSchema: Schema<User> = new Schema({
     },
     profile: {
         type: String,
-        required: true
     },
     bio: {
         type: String,
-        required: true
     },
     createdAt: {
         type: Date,

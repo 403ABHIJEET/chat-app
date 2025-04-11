@@ -12,6 +12,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
+import { flip } from 'lodash';
 
 interface props {
     flips: (val: boolean) => void
@@ -67,7 +68,7 @@ export default function SignUp({ flips }: props) {
         try {
             const response = await axios.post<ApiResponse>('/api/user', data)
             if (response.data.success) {
-                router.replace("/login")
+                flips(false)
             }
         } catch (error) {
             console.error('Error creating user:', error);
