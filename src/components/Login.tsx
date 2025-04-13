@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Eye, EyeOff, Loader2 } from "lucide-react"
+import { toast } from "sonner";
 
 interface props {
     flips: (val: boolean) => void
@@ -28,8 +29,9 @@ export default function Login({ flips }: props) {
         })
         setIsLogging(false)
         if (result?.error) {
-            // handle error
+            toast.error(result.error)
         } else if (result?.url) {
+            toast.success("User login successfully.")
             router.replace(`/chat`);
         }
     };

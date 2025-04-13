@@ -81,7 +81,7 @@ export function ExpandableCardDemo({users}: props) {
                                     priority
                                     width={200}
                                     height={200}
-                                    src={active.profile ?? "https://assets.aceternity.com/demos/lana-del-rey.jpeg"}
+                                    src={active.profile ?? "/profile.jpg"}
                                     alt={active.name}
                                     className="w-full h-80 lg:h-80 sm:rounded-tr-lg sm:rounded-tl-lg object-cover object-top"
                                 />
@@ -106,7 +106,7 @@ export function ExpandableCardDemo({users}: props) {
 
                                     <motion.a
                                         layoutId={`button-${active.username}-${id}`}
-                                        href="#"
+                                        href={`/profile/${active.username}`}
                                         target="_blank"
                                         className="px-4 py-3 text-sm rounded-full font-bold bg-green-500 text-white"
                                     >

@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Switch } from './ui/switch';
-import { Label } from './ui/label';
 
-export default function ThemeToggle() {
+interface props {
+    open?: boolean
+}
+
+export default function ThemeToggle({open}: props) {
     const [isDark, setIsDark] = useState(false);
 
     useEffect(() => {
@@ -19,6 +21,7 @@ export default function ThemeToggle() {
     }, []);
 
     const toggleTheme = () => {
+        console.log(open)
         if (isDark) {
             document.documentElement.classList.remove('dark');
             localStorage.setItem('theme', 'light');
@@ -33,16 +36,19 @@ export default function ThemeToggle() {
     return (
         <div className='flex justify-end items-center'>
             <div className='flex gap-2'>
-                <Switch onClick={toggleTheme} />
-                <Label>
+                <button onClick={toggleTheme}>
                     {
                         isDark ? (
-                            '🌙 Dark'
+                            <span >
+                            🌙 <span className={(open ?? true) ? 'inline' : 'hidden'}>Dark</span>
+                          </span>
                         ) : (
-                            '☀️ Light'
+                            <span >
+                            ☀️ <span className={(open ?? true) ? 'inline' : 'hidden'}>Light</span>
+                            </span>
                         )
                     }
-                </Label>
+                </button>
             </div>
         </div>
     );

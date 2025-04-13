@@ -12,7 +12,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { flip } from 'lodash';
+import { toast } from 'sonner';
 
 interface props {
     flips: (val: boolean) => void
@@ -28,7 +28,7 @@ export default function SignUp({ flips }: props) {
     const [showPassword, setShowPassword] = useState(false);
     const [isSignUp, setIsSignUp] = useState<boolean>(false)
 
-    const { register, handleSubmit, formState: { errors } } = useForm<z.infer<typeof userSignUpSchema>>({
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<z.infer<typeof userSignUpSchema>>({
         resolver: zodResolver(userSignUpSchema),
         defaultValues: {
             name: '',
@@ -65,13 +65,23 @@ export default function SignUp({ flips }: props) {
 
     const onSubmit = async (data: z.infer<typeof userSignUpSchema>) => {
         setIsSignUp(true)
+        let message = ''
         try {
             const response = await axios.post<ApiResponse>('/api/user', data)
             if (response.data.success) {
+                reset()
+                setUsernameMessage('')
                 flips(false)
+            }
+            message = response.data.message
+            if(response.data.success) {
+                toast.success(message)
+            } else {
+                toast.warning(message)
             }
         } catch (error) {
             console.error('Error creating user:', error);
+            toast.error(message)
         } finally {
             setIsSignUp(false)
         }
