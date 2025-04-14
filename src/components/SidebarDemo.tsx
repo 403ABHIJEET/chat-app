@@ -13,6 +13,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import Chat from "./Chat";
 import { signOut } from "next-auth/react";
+import ThemeToggle from "./ThemeToggle";
 
 export function SidebarDemo() {
 
@@ -71,6 +72,9 @@ export function SidebarDemo() {
                                     <SidebarLink link={link} />
                                 </button>
                             ))}
+                            <div className="flex">
+                                <ThemeToggle open={open} />
+                            </div>
                         </div>
                     </div>
                     <div>
