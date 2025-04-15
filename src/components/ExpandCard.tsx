@@ -106,8 +106,7 @@ export function ExpandableCardDemo({users}: props) {
 
                                     <motion.a
                                         layoutId={`button-${active.username}-${id}`}
-                                        href={`/profile/${active.username}`}
-                                        target="_blank"
+                                        href={`/chat/profile/${active.username}`}
                                         className="px-4 py-3 text-sm rounded-full font-bold bg-green-500 text-white"
                                     >
                                         Profile
