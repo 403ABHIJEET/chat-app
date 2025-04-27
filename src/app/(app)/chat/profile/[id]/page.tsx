@@ -1,19 +1,7 @@
 'use client'
-
 import Image from 'next/image'
-import { useTheme } from 'next-themes'
-
-interface ProfileCardProps {
-    name: string
-    position: string
-    followers: number
-    following: number
-    team: string[]
-    profileImage: string
-}
 
 const Page = () => {
-    const { theme } = useTheme()
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-black p-6">

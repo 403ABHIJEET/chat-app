@@ -23,7 +23,7 @@ export default function HeroSectionOne() {
 
       {/* Hero Content */}
       <div className="px-4 py-10 md:py-20">
-        <h1 className="z-10 max-w-4xl text-center text-2xl font-bold text-slate-700 md:text-4xl lg:text-7xl dark:text-slate-300">
+        <h1 className="z-10 mx-auto max-w-4xl text-center text-2xl font-bold text-slate-700 md:text-4xl lg:text-7xl dark:text-slate-300">
           {"Connect instantly. Chat seamlessly. Anytime, anywhere."
             .split(" ")
             .map((word, index) => (
@@ -47,7 +47,7 @@ export default function HeroSectionOne() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3, delay: 0.8 }}
-          className="relative z-10 max-w-xl py-4 text-center text-lg font-normal text-neutral-600 dark:text-neutral-400"
+          className="relative z-10 mx-auto max-w-xl py-4 text-center text-lg font-normal text-neutral-600 dark:text-neutral-400"
         >
           Experience real-time messaging with modern design and intelligent features. Secure, responsive, and built for every conversation that matters.
         </motion.p>
