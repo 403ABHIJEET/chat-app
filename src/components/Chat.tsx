@@ -10,12 +10,10 @@ import {
 } from "@/components/ui/resizable"
 import { User } from "@/models/userModel"
 import { Skeleton } from "@/components/ui/skeleton"
-import Image from "next/image"
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
 import { useDebounceCallback } from 'usehooks-ts';
 import { ExpandableCardDemo } from "./ExpandCard"
 import { Search, Send } from "lucide-react";
-import ThemeToggle from "./ThemeToggle"
 
 export default function Chat() {
 
@@ -55,8 +53,8 @@ export default function Chat() {
         setFetching(true)
         try {
             const response = await axios.get<ApiResponse>(`/api/user`)
-            const users: User[] = response.data.data
-            setUsers(users.filter((user) => user.username !== session?.user.username))
+            const data: User[] = response.data.data
+            setUsers(data.filter((user) => user.username !== session?.user.username))
         } catch (error) {
             console.log(error);
         } finally {
@@ -92,7 +90,7 @@ export default function Chat() {
                     direction="horizontal"
                     className="w-full rounded-lg border"
                 >
-                    <ResizablePanel defaultSize={50}>
+                    <ResizablePanel defaultSize={50} className="min-w-1/4">
                         <div className="p-4 mt-5">
                             <PlaceholdersAndVanishInput
                                 placeholders={placeholders}
@@ -113,7 +111,7 @@ export default function Chat() {
                         </div>
                     </ResizablePanel>
                     <ResizableHandle />
-                    <ResizablePanel defaultSize={50}>
+                    <ResizablePanel defaultSize={50} className="min-w-1/4">
                         <div className="w-full h-full shadow-md p-4 bg-white dark:bg-gray-950  flex flex-col">
                             <div className="mb-2 flex items-center gap-2 px-3 py-2 border rounded-full dark:border-gray-600">
                                 <Search className="w-4 h-4 text-gray-500 dark:text-gray-400" />
@@ -132,10 +130,12 @@ export default function Chat() {
                                         <div
                                             key={msg.id}
                                             className={`max-w-[70%] px-4 py-2 rounded-lg text-sm leading-tight whitespace-pre-line 
-                        ${msg.sender === session?.user.username
-                                                    ? "ml-auto bg-blue-500 text-white dark:bg-blue-700"
-                                                    : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200"
-                                                }`}
+                                                ${
+                                                    msg.sender === session?.user.username ? 
+                                                    "ml-auto bg-blue-500 text-white dark:bg-blue-700" : 
+                                                    "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200"
+                                                }`
+                                            }
                                         >
                                             {msg.content}
                                         </div>

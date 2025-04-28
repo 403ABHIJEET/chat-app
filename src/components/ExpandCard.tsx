@@ -10,6 +10,7 @@ interface props {
 }
 
 export function ExpandableCardDemo({users}: props) {
+
     const [active, setActive] = useState<(typeof users)[number] | boolean | null>(
         null
     );
@@ -69,7 +70,7 @@ export function ExpandableCardDemo({users}: props) {
                             className="flex absolute top-2 right-2 lg:hidden items-center justify-center bg-white rounded-full h-6 w-6"
                             onClick={() => setActive(null)}
                         >
-                            <CloseIcon />
+                        <CloseIcon />
                         </motion.button>
                         <motion.div
                             layoutId={`card-${active.username}-${id}`}
@@ -106,7 +107,7 @@ export function ExpandableCardDemo({users}: props) {
 
                                     <motion.a
                                         layoutId={`button-${active.username}-${id}`}
-                                        href={`/chat/profile/${active.username}`}
+                                        href={`/chat/profile/${active._id}`}
                                         className="px-4 py-3 text-sm rounded-full font-bold bg-green-500 text-white"
                                     >
                                         Profile

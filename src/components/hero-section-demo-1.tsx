@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
+import { MarqueeDemo } from "./MarqueeDemo";
 
 export default function HeroSectionOne() {
   return (
@@ -22,7 +23,7 @@ export default function HeroSectionOne() {
 
       {/* Hero Content */}
       <div className="px-4 py-10 md:py-20">
-        <h1 className="relative z-10 mx-auto max-w-4xl text-center text-2xl font-bold text-slate-700 md:text-4xl lg:text-7xl dark:text-slate-300">
+        <h1 className="z-10 mx-auto max-w-4xl text-center text-2xl font-bold text-slate-700 md:text-4xl lg:text-7xl dark:text-slate-300">
           {"Connect instantly. Chat seamlessly. Anytime, anywhere."
             .split(" ")
             .map((word, index) => (
@@ -56,7 +57,7 @@ export default function HeroSectionOne() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3, delay: 1 }}
-          className="relative z-10 mt-8 flex flex-wrap items-center justify-center gap-4"
+          className="w-fit z-10 mt-8 flex flex-wrap items-center justify-center gap-4"
         >
           <button className="w-60 transform rounded-lg bg-black px-6 py-2 font-medium text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200">
             Try Chat Now
@@ -67,22 +68,18 @@ export default function HeroSectionOne() {
         </motion.div>
 
         {/* Preview Image */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 1.2 }}
-          className="relative z-10 mt-20 rounded-3xl border border-neutral-200 bg-neutral-100 p-4 shadow-md dark:border-neutral-800 dark:bg-neutral-900"
-        >
-          <div className="w-full overflow-hidden rounded-xl border border-gray-300 dark:border-gray-700">
-            <Image
-              src="https://assets.aceternity.com/pro/aceternity-landing.webp"
-              alt="Chat app preview"
-              className="aspect-[16/9] h-auto w-full object-cover"
-              height={1000}
-              width={1000}
-            />
-          </div>
-        </motion.div>
+        <div className="flex justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 1.2 }}
+            className="w-1/2 overflow-hidden relative z-10 mt-20 rounded-3xl border border-neutral-200 bg-neutral-100 p-4 shadow-md dark:border-neutral-800 dark:bg-neutral-900"
+          >
+            <div className="rounded-xl border border-gray-300 dark:border-gray-700">
+              <MarqueeDemo />
+            </div>
+          </motion.div>
+        </div>
       </div>
     </div>
   );
