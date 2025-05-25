@@ -51,7 +51,7 @@ export async function GET(request: NextRequest) {
             const user = await UserModel.findById(userId)
             return NextResponse.json({
                 success: true,
-                message: "Users fetched successfully.",
+                message: "User fetched successfully.",
                 data: user
             }, {status: 200})
         }
