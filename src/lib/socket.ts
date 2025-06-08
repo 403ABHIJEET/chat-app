@@ -1,4 +1,10 @@
 import { io } from 'socket.io-client';
 
-const socket = io('http://192.168.1.2:5000');
+const socket = io('https://chat-app-backend-ykcc.onrender.com', {
+  transports: ['websocket', 'polling'],
+  secure: true,
+  reconnection: true,
+  rejectUnauthorized: false
+});
+
 export default socket;

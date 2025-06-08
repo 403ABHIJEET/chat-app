@@ -12,7 +12,6 @@ export async function GET(request: NextRequest) {
         }
         const sender = queryParams.sender
         const receiver = queryParams.reciever
-        console.log(sender, receiver)
         const result = await MessageModel.find({
             $or: [
                 {
@@ -57,7 +56,6 @@ export async function POST(request: NextRequest) {
             message: "Message saved successfully."
         }, {status: 200})
     } catch (error) {
-        console.log(error)
         return NextResponse.json({
             success: false,
             message: "something went wrong."
