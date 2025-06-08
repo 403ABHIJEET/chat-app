@@ -7,14 +7,17 @@ import { User } from "@/models/userModel";
 
 interface props {
     users: User[]
+    userClicked: (username: string) => void
 }
 
-export function ExpandableCardDemo({users}: props) {
+export function ExpandableCardDemo({ users, userClicked }: props) {
 
     const [active, setActive] = useState<(typeof users)[number] | boolean | null>(
         null
     );
-    
+
+    const [activeUser, setActiveUser] = useState<string>('')
+
     const ref = useRef<HTMLDivElement>(null);
     const id = useId();
 
@@ -70,7 +73,7 @@ export function ExpandableCardDemo({users}: props) {
                             className="flex absolute top-2 right-2 lg:hidden items-center justify-center bg-white rounded-full h-6 w-6"
                             onClick={() => setActive(null)}
                         >
-                        <CloseIcon />
+                            <CloseIcon />
                         </motion.button>
                         <motion.div
                             layoutId={`card-${active.username}-${id}`}
@@ -129,48 +132,66 @@ export function ExpandableCardDemo({users}: props) {
                     </div>
                 ) : null}
             </AnimatePresence>
-            <ul className="max-w-2xl mx-auto w-full gap-4">
+            <div className="flex-1 overflow-y-auto space-y-2 max-h-[calc(100vh-200px)] px-4">
                 {users.map((user, index) => (
                     <motion.div
                         layoutId={`card-${user.username}-${id}`}
                         key={`card-${user.username}-${id}`}
-                        className="p-4 flex flex-col md:flex-row justify-between items-center hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer"
+                        className={`p-4 flex flex-col md:flex-row justify-between items-center rounded-xl cursor-pointer            transition-all duration-300
+                                ${activeUser === user.username
+                                ? "bg-green-100 dark:bg-green-900"
+                                : "hover:bg-neutral-50 dark:hover:bg-neutral-800"}`}
+                        onClick={() => {
+                            userClicked(user.username)
+                            setActiveUser(user.username)
+                        }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3 }}
                     >
-                        <div className="flex gap-4 flex-col md:flex-row w-full">
+                        <div className="flex gap-4 flex-col md:flex-row w-full items-center md:items-start">
                             <motion.div layoutId={`image-${user.username}-${id}`}>
                                 <Image
                                     width={100}
                                     height={100}
-                                    src={user.profile ?? `https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/${index+1}.png`}
+                                    src={
+                                        user.profile ??
+                                        `https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/${index + 1}.png`
+                                    }
                                     alt={user.username}
                                     className="h-40 w-40 md:h-14 md:w-14 rounded-lg object-cover object-top"
                                 />
                             </motion.div>
-                            <div className="">
+                            <div className="flex-1 text-center md:text-left">
                                 <motion.h3
                                     layoutId={`title-${user.username}-${id}`}
-                                    className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left"
+                                    className="font-medium text-neutral-800 dark:text-neutral-200"
                                 >
                                     {user.name}
                                 </motion.h3>
                                 <motion.p
                                     layoutId={`description-${user.username}-${id}`}
-                                    className="text-neutral-600 dark:text-neutral-400 text-center md:text-left"
+                                    className="text-neutral-600 dark:text-neutral-400"
                                 >
-                                    {user.username}
+                                    @{user.username}
                                 </motion.p>
                             </div>
                         </div>
                         <motion.button
                             layoutId={`button-${user.username}-${id}`}
-                            onClick={() => setActive(user)}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setActive(user);
+                            }}
                             className="px-4 py-2 text-sm rounded-full font-bold bg-gray-100 hover:bg-green-500 hover:text-white text-black mt-4 md:mt-0"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
                         >
                             Profile
                         </motion.button>
                     </motion.div>
                 ))}
-            </ul>
+            </div>
         </>
     );
 }

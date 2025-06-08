@@ -2,7 +2,7 @@ import mongoose, {Schema, Document} from "mongoose";
 
 export interface Message extends Document {
     sender: string
-    reciever: string
+    receiver: string
     content: string,
     createdAt: Date
 }
@@ -12,7 +12,7 @@ export const MessageSchema: Schema<Message> = new Schema({
         type: String,
         required: true
     },
-    reciever: {
+    receiver: {
         type: String,
         required: true
     },
@@ -27,6 +27,6 @@ export const MessageSchema: Schema<Message> = new Schema({
     }
 })
 
-const MessageModel = (mongoose.models.User as mongoose.Model<Message>) || mongoose.model<Message>("User", MessageSchema)
+const MessageModel = (mongoose.models.Message as mongoose.Model<Message>) || mongoose.model<Message>("Message", MessageSchema)
 
 export default MessageModel

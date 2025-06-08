@@ -1,4 +1,3 @@
-import { Message } from "@/models/messageModel"
 import { useSession } from "next-auth/react"
 import { useEffect, useRef, useState } from "react"
 import axios from "axios"
@@ -13,7 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
 import { useDebounceCallback } from 'usehooks-ts';
 import { ExpandableCardDemo } from "./ExpandCard"
-import { Search, Send } from "lucide-react";
+import SocketChat from "./socket/SocketChat"
 
 export default function Chat() {
 
@@ -44,10 +43,10 @@ export default function Chat() {
     };
 
     const { data: session, status } = useSession()
-    const [messages, setMessages] = useState<Message[]>([])
     const [fetching, setFetching] = useState<boolean>(false)
     const [users, setUsers] = useState<User[]>([])
     const debounced = useDebounceCallback(handleChange, 500)
+    const [reciever, setReciever] = useState<string>('')
 
     const fetchUsers = async () => {
         setFetching(true)
@@ -67,20 +66,6 @@ export default function Chat() {
             fetchUsers()
         }
     }, [status])
-
-    const [input, setInput] = useState<string>("");
-    const [search, setSearch] = useState<string>("");
-    const bottomRef = useRef<HTMLDivElement | null>(null);
-
-    useEffect(() => {
-        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [messages]);
-
-
-    const sendMessage = () => {
-        if (input.trim() === "") return;
-        setInput("");
-    };
 
     return (
 
@@ -104,7 +89,7 @@ export default function Chat() {
                                     fetching ? (
                                         <Skeleton />
                                     ) : (
-                                        <ExpandableCardDemo users={users} />
+                                        <ExpandableCardDemo users={users} userClicked={(RecieverUsername) => setReciever(RecieverUsername)} />
                                     )
                                 }
                             </div>
@@ -112,49 +97,13 @@ export default function Chat() {
                     </ResizablePanel>
                     <ResizableHandle />
                     <ResizablePanel defaultSize={50} className="min-w-1/4">
-                        <div className="w-full h-full shadow-md p-4 bg-white dark:bg-gray-950  flex flex-col">
-                            <div className="mb-2 flex items-center gap-2 px-3 py-2 border rounded-full dark:border-gray-600">
-                                <Search className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                                <input
-                                    type="text"
-                                    value={search}
-                                    onChange={(e) => setSearch(e.target.value)}
-                                    placeholder="Search messages"
-                                    className="flex-1 outline-none text-sm placeholder-gray-400 dark:placeholder-gray-500 text-gray-800 dark:text-white"
-                                />
-                            </div>
-                            <div className="flex-1 overflow-y-auto space-y-2">
-                                {messages
-                                    .filter((msg) => msg.content.toLowerCase().includes(search.toLowerCase()))
-                                    .map((msg) => (
-                                        <div
-                                            key={msg.id}
-                                            className={`max-w-[70%] px-4 py-2 rounded-lg text-sm leading-tight whitespace-pre-line 
-                                                ${
-                                                    msg.sender === session?.user.username ? 
-                                                    "ml-auto bg-blue-500 text-white dark:bg-blue-700" : 
-                                                    "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200"
-                                                }`
-                                            }
-                                        >
-                                            {msg.content}
-                                        </div>
-                                    ))}
-                                <div ref={bottomRef} />
-                            </div>
-                            <div className="flex items-center border rounded-full px-3 py-2 mt-2 dark:border-gray-600">
-                                <input
-                                    type="text"
-                                    value={input}
-                                    onChange={(e) => setInput(e.target.value)}
-                                    placeholder="Type a message"
-                                    className="flex-1 outline-none text-sm placeholder-gray-400 dark:placeholder-gray-500 text-gray-800 dark:text-white"
-                                />
-                                <button onClick={sendMessage} className="text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400">
-                                    <Send className="w-4 h-4" />
-                                </button>
-                            </div>
-                        </div>
+                        {
+                            reciever ? (
+                                <SocketChat userId={session?.user.username} recipientId={reciever} />
+                            ) : (
+                                'hello bro'
+                            )
+                        }
                     </ResizablePanel>
                 </ResizablePanelGroup>
             </div>

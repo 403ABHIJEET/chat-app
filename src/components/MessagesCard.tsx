@@ -1,4 +1,12 @@
-export default function MessageCard() {
+import dayjs from 'dayjs';
+
+interface props {
+    name: string,
+    content: string
+    time: Date
+}
+
+export function SenderMessageCard({name, content, time}: props) {
     return (
         <div>
             <div className="chat chat-start">
@@ -10,12 +18,18 @@ export default function MessageCard() {
                     </div>
                 </div>
                 <div className="chat-header">
-                    Obi-Wan Kenobi
-                    <time className="text-xs opacity-50">12:45</time>
+                    <time className="text-xs opacity-50">{dayjs(time).format('MMM D, YYYY h:mm A')}</time>
                 </div>
-                <div className="chat-bubble">You were the Chosen One!</div>
-                <div className="chat-footer opacity-50">Delivered</div>
+                <div className="chat-bubble">{content}</div>
             </div>
+        </div>
+    )
+}
+
+
+export function ReceiverMessageCard({name, content, time}: props) {
+    return (
+        <div>
             <div className="chat chat-end">
                 <div className="chat-image avatar">
                     <div className="w-10 rounded-full">
@@ -25,11 +39,9 @@ export default function MessageCard() {
                     </div>
                 </div>
                 <div className="chat-header">
-                    Anakin
-                    <time className="text-xs opacity-50">12:46</time>
+                    <time className="text-xs opacity-50">{dayjs(time).format('MMM D, YYYY h:mm A')}</time>
                 </div>
-                <div className="chat-bubble">I hate you!</div>
-                <div className="chat-footer opacity-50">Seen at 12:46</div>
+                <div className="chat-bubble">{content}</div>
             </div>
         </div>
     )

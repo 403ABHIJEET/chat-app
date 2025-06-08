@@ -1,12 +1,11 @@
 'use client'
-import ThemeToggle from "@/components/ThemeToggle"
-import { toast } from "sonner"
+import { SenderMessageCard, ReceiverMessageCard } from "@/components/MessagesCard"
 
 const Page = () => {
     return (
         <div>
-            <button onClick={() => toast.error("Someting went wrong")} >error</button>
-            <button onClick={() => toast.success("everything is okay")} >success</button>
+            {/* <SenderMessageCard />
+            <ReceiverMessageCard /> */}
         </div>
     )
 }
