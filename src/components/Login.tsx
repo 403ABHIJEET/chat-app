@@ -20,19 +20,25 @@ export default function Login({ flips }: props) {
     const [isLogging, setIsLogging] = useState<boolean>(false)
 
     const handleLogin = async (e: any) => {
-        setIsLogging(true)
-        e.preventDefault()
-        const result = await signIn('credentials', {
-            redirect: false,
-            identifier: identifier,
-            password: password
-        })
-        setIsLogging(false)
-        if (result?.error) {
-            toast.error(result.error)
-        } else if (result?.url) {
-            toast.success("User login successfully.")
-            router.replace(`/chat`);
+        try {
+            setIsLogging(true)
+            e.preventDefault()
+            const result = await signIn('credentials', {
+                redirect: false,
+                identifier: identifier,
+                password: password
+            })
+            setIsLogging(false)
+            if (result?.error) {
+                toast.error(result.error)
+            } else if (result?.url) {
+                toast.success("User login successfully.")
+                router.replace(`/chat`);
+            }
+        } catch (error) {
+            setIsLogging(false)
+        } finally {
+            setIsLogging(false)
         }
     };
 
