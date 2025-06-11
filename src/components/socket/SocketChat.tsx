@@ -65,6 +65,19 @@ export default function SocketChat({ userId, recipientId }: props) {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  const searchMessage = async(searchKey: string) => {
+    if(searchKey === '') {
+      await fetchMessages()
+      return
+    }
+    const searchedMessages = messages.filter((msg) => {
+      const messageLower = msg.content.toLowerCase()
+      const searchKeyLower = searchKey.toLowerCase()
+      return messageLower.includes(searchKeyLower) || searchKeyLower.includes(messageLower)
+    })
+    setMessages(searchedMessages)
+  }
+
   return (
     <div className="w-full h-full shadow-md p-4 bg-white dark:bg-gray-950  flex flex-col">
       <div className="mb-2 flex items-center gap-2 px-3 py-2 border rounded-full dark:border-gray-600">
@@ -72,12 +85,15 @@ export default function SocketChat({ userId, recipientId }: props) {
         <input
           type="text"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => {
+            setSearch(e.target.value)
+            searchMessage(e.target.value)
+          }}
           placeholder="Search messages"
           className="flex-1 outline-none text-sm placeholder-gray-400 dark:placeholder-gray-500 text-gray-800 dark:text-white"
         />
       </div>
-      <div className="flex-1 overflow-y-auto space-y-2">
+      <div className="flex-1 overflow-y-auto space-y-2 bg-[url('/chat/chat-bg.avif')] bg-cover bg-center bg-no-repeat">
         {
           messages.map((msg: Message, idx) => (
             <div key={idx}>
